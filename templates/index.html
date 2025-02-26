@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task Tracker</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Task Tracker ✅</h1>
+
+        <!-- Task Input Form -->
+        <form action="/add" method="POST">
+            <input type="text" name="description" placeholder="Task Description" required>
+            <input type="date" name="due_date" required>
+            <button type="submit">➕ Add Task</button>
+        </form>
+
+        <h2>Your Tasks 📋</h2>
+        <ul id="task-list">
+            {% for task in tasks %}
+                <li class="{% if task.completed %}completed{% endif %}">
+                    <span>{{ task.description }} (Due: {{ task.due_date }})</span>
+                    <div class="actions">
+                        {% if not task.completed %}
+                            <a href="/complete/{{ loop.index0 }}" class="complete-btn">✅ Complete</a>
+                        {% endif %}
+                        <a href="/delete/{{ loop.index0 }}" class="delete-btn">❌ Delete</a>
+                    </div>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
+
